@@ -15,10 +15,92 @@
 package swift
 
 const (
+	SampleVulnerableHSSWIFT2 = `
+class CoreDataManager {
+    static let shared = CoreDataManager()
+    private init() {}
+    private lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "PillReminder")
+        container.loadPersistentStores(completionHandler: { _, error in
+            _ = error.map { fatalError("Unresolved error \($0)") }
+        })
+        return container
+    }()
+    
+    var mainContext: NSManagedObjectContext {
+        return persistentContainer.viewContext
+    }
+    
+    func backgroundContext() -> NSManagedObjectContext {
+        return persistentContainer.newBackgroundContext()
+    }
+}
+...
+func savePill(pass: String) throws {
+    let context = CoreDataManager.shared.backgroundContext()
+    context.perform {
+        let entity = Pill.entity()
+        let pill = Pill(entity: entity, insertInto: context)
+        pill.pass = pass
+        pill.amount = 2
+        pill.dozePerDay = 1
+        pill.lastUpdate = Date()
+        try context.save()
+    }
+}
+`
+	SampleVulnerableHSSWIFT3 = `
+...
+var tlsMinimumSupportedProtocolVersion: tls_protocol_version_t.DTLSv11
+`
+	SampleVulnerableHSSWIFT4 = `
+...
+var tlsMinimumSupportedProtocolVersion: tls_protocol_version_t.TLSv11
+`
+	SampleVulnerableHSSWIFT5 = `import PackageDescription
+let package = Package(name: "Alamofire",
+                      platforms: [.macOS(.v10_12),
+                                  .iOS(.v10),
+                                  .tvOS(.v10),
+                                  .watchOS(.v3)],
+                      products: [.library(name: "Alamofire", targets: ["Alamofire"]),
+							 	 .library(name: "FridaGadget", targets: ["FridaGadget"]),
+							 	 .library(name: "cynject", targets: ["cynject"]),
+							 	 .library(name: "libcycript", targets: ["libcycript"])],
+                      targets: [.target(name: "Alamofire",
+                                        path: "Source",
+                                        exclude: ["Info.plist"],
+                                        linkerSettings: [.linkedFramework("CFNetwork",
+                                                                          .when(platforms: [.iOS,
+                                                                                            .macOS,
+                                                                                            .tvOS,
+                                                                                            .watchOS]))]),
+                                .testTarget(name: "AlamofireTests",
+                                            dependencies: ["Alamofire"],
+                                            path: "Tests",
+                                            exclude: ["Resources", "Info.plist"])],
+                      swiftLanguageVersions: [.v5])`
 	SampleVulnerableHSSWIFT6 = `import CryptoSwift
 
 		"SwiftSummit".md5()
 `
+	SampleVulnerableHSSWIFT7 = ``
+	SampleVulnerableHSSWIFT8 = ``
+	SampleVulnerableHSSWIFT9 = ``
+	SampleVulnerableHSSWIFT10 = ``
+	SampleVulnerableHSSWIFT11 = ``
+	SampleVulnerableHSSWIFT12 = ``
+	SampleVulnerableHSSWIFT13 = ``
+	SampleVulnerableHSSWIFT14 = ``
+	SampleVulnerableHSSWIFT15 = ``
+	SampleVulnerableHSSWIFT16 = ``
+	SampleVulnerableHSSWIFT17 = ``
+	SampleVulnerableHSSWIFT18 = ``
+	SampleVulnerableHSSWIFT19 = ``
+	SampleVulnerableHSSWIFT20 = ``
+	SampleVulnerableHSSWIFT21 = ``
+	SampleVulnerableHSSWIFT22 = ``
+	SampleVulnerableHSSWIFT23 = ``
 	SampleVulnerableHSSWIFT24 = `
 let err = SD.executeChange("SELECT * FROM User where user="+ valuesFromInput) {
     //there was an error during the insert, handle it here
@@ -29,6 +111,62 @@ let err = SD.executeChange("SELECT * FROM User where user="+ valuesFromInput) {
 )
 
 const (
+	SampleSafeHSSWIFT2 = `
+class CoreDataManager {
+    static let shared = CoreDataManager()
+    private init() {}
+    private lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "PillReminder")
+        container.loadPersistentStores(completionHandler: { _, error in
+            _ = error.map { fatalError("Unresolved error \($0)") }
+        })
+        return container
+    }()
+    
+    var mainContext: NSManagedObjectContext {
+        return persistentContainer.viewContext
+    }
+    
+    func backgroundContext() -> NSManagedObjectContext {
+        return persistentContainer.newBackgroundContext()
+    }
+}
+...
+func savePill(pass: String) throws {
+    let context = CoreDataManager.shared.backgroundContext()
+    context.perform {
+        let entity = Pill.entity()
+        let pill = Pill(entity: entity, insertInto: context)
+        pill.password = EncryptedDATAStack(passphraseKey:pass, modelName:"MyAppModel")
+        pill.amount = 2
+        pill.dozePerDay = 1
+        pill.lastUpdate = Date()
+        try context.save()
+    }
+}
+`
+	SampleSafeHSSWIFT3 = `var tlsMinimumSupportedProtocolVersion: tls_protocol_version_t.DTLSv12`
+	SampleSafeHSSWIFT4 = `var tlsMinimumSupportedProtocolVersion: tls_protocol_version_t.TLSv12`
+	SampleSafeHSSWIFT5 = `import PackageDescription
+let package = Package(name: "Alamofire",
+                      platforms: [.macOS(.v10_12),
+                                  .iOS(.v10),
+                                  .tvOS(.v10),
+                                  .watchOS(.v3)],
+                      products: [.library(name: "Alamofire", targets: ["Alamofire"])],
+                      targets: [.target(name: "Alamofire",
+                                        path: "Source",
+                                        exclude: ["Info.plist"],
+                                        linkerSettings: [.linkedFramework("CFNetwork",
+                                                                          .when(platforms: [.iOS,
+                                                                                            .macOS,
+                                                                                            .tvOS,
+                                                                                            .watchOS]))]),
+                                .testTarget(name: "AlamofireTests",
+                                            dependencies: ["Alamofire"],
+                                            path: "Tests",
+                                            exclude: ["Resources", "Info.plist"])],
+                      swiftLanguageVersions: [.v5])`
 	SampleSafeHSSWIFT6 = `import Foundation
 import var CommonCrypto.CC_MD5_DIGEST_LENGTH
 import func CommonCrypto.CC_MD5
@@ -53,7 +191,23 @@ func MD5(string: String) -> Data {
 
 //Test:
 let md5Data = MD5(string:"Hello")`
-
+	SampleSafeHSSWIFT7 = ``
+	SampleSafeHSSWIFT8 = ``
+	SampleSafeHSSWIFT9 = ``
+	SampleSafeHSSWIFT10 = ``
+	SampleSafeHSSWIFT11 = ``
+	SampleSafeHSSWIFT12 = ``
+	SampleSafeHSSWIFT13 = ``
+	SampleSafeHSSWIFT14 = ``
+	SampleSafeHSSWIFT15 = ``
+	SampleSafeHSSWIFT16 = ``
+	SampleSafeHSSWIFT17 = ``
+	SampleSafeHSSWIFT18 = ``
+	SampleSafeHSSWIFT19 = ``
+	SampleSafeHSSWIFT20 = ``
+	SampleSafeHSSWIFT21 = ``
+	SampleSafeHSSWIFT22 = ``
+	SampleSafeHSSWIFT23 = ``
 	SampleSafeHSSWIFT24 = `
 if let err = SD.executeChange("SELECT * FROM User where user=?", withArgs: [name, population, isWarm, foundedIn]) {
     //there was an error during the insert, handle it here

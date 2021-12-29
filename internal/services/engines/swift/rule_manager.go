@@ -37,7 +37,7 @@ func rules() []engine.Rule {
 		NewWeakMD5CryptoCipher(),
 		NewReverseEngineering(),
 		NewTLS13NotUsed(),
-		NewDTLS12NotUsed(),
+		NewDTLS11NotUsed(),
 		NewCoreDataDatabase(),
 		// NewSQLiteDatabase(),
 
