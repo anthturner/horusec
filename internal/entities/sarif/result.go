@@ -12,11 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package outputtype
+package sarif
+
+type Result struct {
+	Message   TextDisplayComponent `json:"message"`
+	Level     ResultLevel          `json:"level"`
+	Locations []PhysicalLocation   `json:"locations"`
+	RuleId    string               `json:"ruleId"`
+}
+
+type ResultLevel string
 
 const (
-	Text      = "text"
-	JSON      = "json"
-	Sarif     = "sarif"
-	SonarQube = "sonarqube"
+	Error   = "error"
+	Warning = "warning"
+	Note    = "note"
 )

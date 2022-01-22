@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package outputtype
+package sarif
 
-const (
-	Text      = "text"
-	JSON      = "json"
-	Sarif     = "sarif"
-	SonarQube = "sonarqube"
-)
+type SnippetRegion struct {
+	Snippet     TextDisplayComponent `json:"snippet"`
+	StartLine   int                  `json:"startLine"`
+	EndLine     int                  `json:"endLine"`
+	StartColumn int                  `json:"startColumn"`
+	EndColumn   int                  `json:"endColumn"`
+}

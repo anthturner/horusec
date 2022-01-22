@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package outputtype
+package sarif
 
-const (
-	Text      = "text"
-	JSON      = "json"
-	Sarif     = "sarif"
-	SonarQube = "sonarqube"
-)
+type ReportRun struct {
+	Tool      ScanTool   `json:"tools"`
+	Artifacts []Artifact `json:"artifacts"`
+	Results   []Result   `json:"results"`
+}

@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package outputtype
+package sarif
 
-const (
-	Text      = "text"
-	JSON      = "json"
-	Sarif     = "sarif"
-	SonarQube = "sonarqube"
-)
+type Rule struct {
+	Id               string               `json:"id"`
+	ShortDescription TextDisplayComponent `json:"shortDescription"`
+	FullDescription  TextDisplayComponent `json:"fullDescription"`
+	HelpUri          string               `json:"helpUri"`
+	Name             string               `json:"name"`
+}

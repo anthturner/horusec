@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package outputtype
+package sarif
 
-const (
-	Text      = "text"
-	JSON      = "json"
-	Sarif     = "sarif"
-	SonarQube = "sonarqube"
-)
+type ScanToolDriver struct {
+	Name               string `json:"name"`
+	MoreInformationUri string `json:"informationUri"`
+	Rules              []Rule `json:"rules"`
+	Version            string `json:"version"`
+}
