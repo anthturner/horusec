@@ -102,6 +102,7 @@ func (f *Formatter) newVulnerability(
 	vulnData *dependencyCheckVulnerability, dependency *dependencyCheckDependency,
 ) *vulnerability.Vulnerability {
 	vuln := &vulnerability.Vulnerability{
+		RuleID:       "DEPCHK-" + dependency.FileName,
 		SecurityTool: tools.OwaspDependencyCheck,
 		Language:     languages.Generic,
 		Severity:     vulnData.getSeverity(),

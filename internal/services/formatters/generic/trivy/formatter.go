@@ -26,6 +26,7 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/severities"
 	"github.com/ZupIT/horusec-devkit/pkg/enums/tools"
 	enumvulnerability "github.com/ZupIT/horusec-devkit/pkg/enums/vulnerability"
+	"github.com/ZupIT/horusec-devkit/pkg/utils/crypto"
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 	"github.com/google/uuid"
 
@@ -170,6 +171,7 @@ func (f *Formatter) addVulnerabilitiesOutput(vulnerabilities []*trivyVulnerabili
 		addVuln.Details = vuln.getDetails()
 		addVuln.Severity = severities.GetSeverityByString(vuln.Severity)
 		addVuln.VulnHash = f.getOldHash(vuln.PkgName, *addVuln)
+		addVuln.RuleID = "TRIVY-VULN-" + crypto.GenerateSHA256(addVuln.Code)[0:8]
 		f.AddNewVulnerabilityIntoAnalysis(addVuln)
 	}
 }
@@ -196,6 +198,7 @@ func (f *Formatter) addMisconfigurationOutput(result []*trivyMisconfiguration, t
 			"%s - %s - %s - %s", vuln.Description, vuln.Message, vuln.Resolution, vuln.References,
 		)
 		addVuln.Severity = severities.GetSeverityByString(vuln.Severity)
+		addVuln.RuleID = "TRIVY-MC-" + crypto.GenerateSHA256(vuln.Title)[0:8]
 		addVuln = vulnhash.Bind(addVuln)
 		f.AddNewVulnerabilityIntoAnalysis(addVuln)
 	}
