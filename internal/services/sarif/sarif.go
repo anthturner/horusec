@@ -16,6 +16,7 @@ package sarif
 
 import (
 	"strconv"
+	"strings"
 
 	horusecEntities "github.com/ZupIT/horusec-devkit/pkg/entities/analysis"
 	vulnEntity "github.com/ZupIT/horusec-devkit/pkg/entities/vulnerability"
@@ -136,7 +137,7 @@ func (s *Sarif) newRule(vulnerability *vulnEntity.Vulnerability) sarif.Rule {
 			Text: vulnerability.Details,
 		},
 		HelpUri: "https://not.implemented", // TODO
-		Name:    vulnerability.RuleID,
+		Name:    strings.Split(vulnerability.Details, "\n")[0],
 	}
 }
 
@@ -154,17 +155,19 @@ func (s *Sarif) newResult(vulnerability *vulnEntity.Vulnerability) sarif.Result 
 			Text: vulnerability.Details,
 		},
 		Level: sarif.ResultLevel(s.convertHorusecSeverityToSarif(vulnerability.Severity)),
-		Locations: []sarif.PhysicalLocation{
+		Locations: []sarif.Location{
 			{
-				ArtifactLocation: sarif.LocationComponent{
-					Uri: vulnerability.File,
-				},
-				Region: sarif.SnippetRegion{
-					Snippet: sarif.TextDisplayComponent{
-						Text: vulnerability.Code,
+				PhysicalLocation: sarif.PhysicalLocation{
+					ArtifactLocation: sarif.LocationComponent{
+						Uri: vulnerability.File,
 					},
-					StartLine:   s.convertNonZeroIntStr(vulnerability.Line),
-					StartColumn: s.convertNonZeroIntStr(vulnerability.Column),
+					Region: sarif.SnippetRegion{
+						Snippet: sarif.TextDisplayComponent{
+							Text: vulnerability.Code,
+						},
+						StartLine:   s.convertNonZeroIntStr(vulnerability.Line),
+						StartColumn: s.convertNonZeroIntStr(vulnerability.Column),
+					},
 				},
 			},
 		},

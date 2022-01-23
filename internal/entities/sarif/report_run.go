@@ -15,7 +15,7 @@
 package sarif
 
 type ReportRun struct {
-	Tool      ScanTool   `json:"tools"`
+	Tool      ScanTool   `json:"tool"`
 	Artifacts []Artifact `json:"artifacts"`
 	Results   []Result   `json:"results"`
 }

@@ -14,10 +14,6 @@
 
 package sarif
 
-type SnippetRegion struct {
-	Snippet     TextDisplayComponent `json:"snippet"`
-	StartLine   int                  `json:"startLine"`
-	StartColumn int                  `json:"startColumn"`
-	//EndLine     int                  `json:"endLine"`
-	//EndColumn   int                  `json:"endColumn"`
+type Location struct {
+	PhysicalLocation PhysicalLocation `json:"physicalLocation"`
 }

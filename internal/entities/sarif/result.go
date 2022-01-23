@@ -17,7 +17,7 @@ package sarif
 type Result struct {
 	Message   TextDisplayComponent `json:"message"`
 	Level     ResultLevel          `json:"level"`
-	Locations []PhysicalLocation   `json:"locations"`
+	Locations []Location           `json:"locations"`
 	RuleId    string               `json:"ruleId"`
 }
 

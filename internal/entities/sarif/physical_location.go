@@ -15,6 +15,6 @@
 package sarif
 
 type PhysicalLocation struct {
-	ArtifactLocation LocationComponent `json:"physicalLocation"`
+	ArtifactLocation LocationComponent `json:"artifactLocation"`
 	Region           SnippetRegion     `json:"region"`
 }
